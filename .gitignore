@@ -1,3 +1,11 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+
+/presentation/exzerpt/exzerpt.aux
+/presentation/exzerpt/exzerpt.fdb_latexmk
+/presentation/exzerpt/exzerpt.fls
+/presentation/exzerpt/exzerpt.log
+/presentation/exzerpt/exzerpt.pdf
+/presentation/exzerpt/exzerpt.synctex.gz
+/presentation/exzerpt/identity.tex
