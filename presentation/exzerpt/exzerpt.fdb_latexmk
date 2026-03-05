@@ -1,0 +1,18 @@
+# Fdb version 4
+["pdflatex"] 1772730807.41745 "/home/andre/Projects/GodotG/project--re-boot/presentation/exzerpt/exzerpt.tex" "exzerpt.pdf" "exzerpt" 1772730807.49326 0
+  "/home/andre/Projects/GodotG/project--re-boot/presentation/exzerpt/exzerpt.tex" 1772730791.50774 90 6afd0bb872fa835eab61eb7160802aab ""
+  "/usr/share/texmf-dist/fonts/tfm/public/cm/cmr12.tfm" 1772460543 1288 655e228510b4c2a1abe905c368440826 ""
+  "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1772460543 32722 d7379af29a190c3f453aba36302ff5a9 ""
+  "/usr/share/texmf-dist/tex/latex/base/article.cls" 1772460543 20144 b966087dda3b194755eb460d32e2ef75 ""
+  "/usr/share/texmf-dist/tex/latex/base/size12.clo" 1772460543 8449 8dc66c6c313c8eb2d774af83bca435dd ""
+  "/usr/share/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def" 1772460543 30662 bfd6e864f4ffc5018b0e2b6260c3181c ""
+  "/usr/share/texmf-dist/web2c/texmf.cnf" 1772460543 43569 fd570f2fa160877d211e859f687312ba ""
+  "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1772730564 325717 59a65e600f662ceace641c3ea8b5d4af ""
+  "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1772730524 2328181 d22f7c78658c9bc3dd913fd1e199ff6e ""
+  "exzerpt.aux" 1772730807.48174 32 3985256e7290058c681f74d7a3565a19 "pdflatex"
+  "exzerpt.tex" 1772730791.50774 90 6afd0bb872fa835eab61eb7160802aab ""
+  (generated)
+  "exzerpt.aux"
+  "exzerpt.log"
+  "exzerpt.pdf"
+  (rewritten before read)

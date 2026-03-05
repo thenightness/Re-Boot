@@ -1,10 +1,8 @@
 extends CharacterBody2D
 
-
 const walkSpeed = 100.0
 const pushSpeed = 200.0
 const jump_velocity = -300.0
-
 
 func _physics_process(delta: float) -> void:
 	var wall_normal = get_wall_normal()
