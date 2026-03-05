@@ -1,46 +1,82 @@
 extends CharacterBody2D
 
+# 1. Define the possible states [cite: 62]
+enum States {IDLE, WALK, AIR, WALL_HANG}
+
+# 2. Track the current state with a setter for "enter/exit" logic [cite: 63, 77]
+var state: States = States.IDLE: set = set_state 
+
 const walkSpeed = 100.0
 const pushSpeed = 200.0
 const jump_velocity = -300.0
 
 func _physics_process(delta: float) -> void:
-	var wall_normal = get_wall_normal()
 	var input_direction := Input.get_axis("ui_left", "ui_right")
-	# 1. Luft
-	if not is_on_floor():
-		# 2. Wall-Hang
-		# Prüfen: Berühren wir eine Wand, sind in der Luft und halten "Jump"?
-		if is_on_wall() and Input.is_action_pressed("ui_up"):
-			# Fallen wird gestoppt
+	
+	# --- PHYSICAL LOGIC (How we move in the current state) ---
+	match state:
+		States.IDLE, States.WALK:
+			velocity.x = input_direction * walkSpeed
+			if not is_on_floor(): 
+				velocity += get_gravity() * delta
+			if input_direction != 0:
+				$AnimatedSprite2D.scale.x = input_direction
+			
+		States.AIR:
+			velocity.x = input_direction * pushSpeed
+			velocity += get_gravity() * delta
+			if input_direction != 0:
+				$AnimatedSprite2D.scale.x = input_direction
+			
+		States.WALL_HANG:
+			# Gravity override logic from your original code
 			if velocity.y > 0:
 				velocity.y = 0
 			else:
 				velocity.y += 40
-			# Prüfen, ob wir die Richtung weg von der Wand drücken
-			# wall_normal.x ist 1 (Wand links) oder -1 (Wand rechts)
+
+	# --- TRANSITION LOGIC (When to switch states) [cite: 71, 72] ---
+	match state:
+		States.IDLE, States.WALK:
+			if Input.is_action_pressed("ui_up"):
+				velocity.y = jump_velocity
+				velocity.x = input_direction * pushSpeed
+				state = States.AIR
+			elif not is_on_floor():
+				state = States.AIR
+			elif is_equal_approx(input_direction, 0.0):
+				state = States.IDLE
+			else:
+				state = States.WALK
+
+		States.AIR:
+			if is_on_floor():
+				state = States.IDLE
+			elif is_on_wall() and Input.is_action_pressed("ui_up"):
+				state = States.WALL_HANG
+
+		States.WALL_HANG:
+			var wall_normal = get_wall_normal()
+			print(wall_normal)
+			# Wall Kick Logic
 			if (wall_normal.x > 0 and input_direction > 0) or (wall_normal.x < 0 and input_direction < 0):
-				# Wir geben dem Spieler einen Kick in beide Achsen
 				velocity.x = wall_normal.x * pushSpeed
 				velocity.y = jump_velocity
-			#! Optional: Hier eine "Hang"-Animation abspielen
-		else:
-			velocity += get_gravity() * delta
-	# Handle jump.
-	if Input.is_action_pressed("ui_up") and is_on_floor():
-		velocity.y = jump_velocity
-		velocity.x = input_direction * pushSpeed
-	elif not is_on_floor():
-		# Get the input input_direction and handle the movement/deceleration.
-		if input_direction:
-			velocity.x = input_direction * pushSpeed
-		else:
-			velocity.x = move_toward(velocity.x, 0, pushSpeed)
-	else:
-		# Get the input input_direction and handle the movement/deceleration.
-		if input_direction:
-			velocity.x = input_direction * walkSpeed
-		else:
-			velocity.x = move_toward(velocity.x, 0, walkSpeed)
+				state = States.AIR
+			# Let go of wall
+			elif not is_on_wall() or not Input.is_action_pressed("ui_up"):
+				state = States.AIR
 
 	move_and_slide()
+
+# 3. Enter/Exit logic for animations or special values [cite: 78, 83]
+func set_state(new_state: States) -> void:
+	var previous_state := state
+	state = new_state
+	
+	# Optional: Logic for when a state starts [cite: 83, 85]
+	#match state:
+	#	States.IDLE:
+		#	print("Entered Idle")
+	#	States.WALL_HANG:
+		#	print("Started Wall Hanging")
