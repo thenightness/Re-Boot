@@ -2,79 +2,75 @@ extends Node
 
 @export var world_scene: PackedScene
 
-# Referenzen auf die wichtigsten Nodes (basierend auf deinem Szenenbaum)
-@onready var main_menu = $UI/MainMenu
-@onready var pause_menu = $UI/PauseMenu
-@onready var death_menu = $UI/DeathMenu
-@onready var pause_button = $UI/Button_Pause
-
+# Enums machen den Code lesbar
+enum GameState { MAIN_MENU, PLAYING, PAUSED, GAME_OVER }
+var current_state: GameState = GameState.MAIN_MENU
 var current_world: Node = null
 
+@onready var ui_layers = {
+	GameState.MAIN_MENU: $UI/MainMenu,
+	GameState.PLAYING: $UI/Button_Pause,
+	GameState.PAUSED: $UI/PauseMenu,
+	GameState.GAME_OVER: $UI/DeathMenu
+}
+
 func _ready() -> void:
-	# 1. Signale verbinden
-	main_menu.start_game.connect(_on_start_game)
-	pause_menu.restart.connect(_on_start_game)
-	death_menu.restart.connect(_on_start_game)
-	pause_menu.resumed.connect(_on_resume_game)
-	pause_menu.quit_to_main.connect(_on_back_to_main_menu)
-	death_menu.quit_to_main.connect(_on_back_to_main_menu)
-	pause_button.pressed.connect(_on_pause_pressed)
+	# Signale zentral verbinden
+	ui_layers[GameState.MAIN_MENU].start_game.connect(_on_start_requested)
+	ui_layers[GameState.PAUSED].restart.connect(_on_start_requested)
+	ui_layers[GameState.GAME_OVER].restart.connect(_on_start_requested)
 	
-	# 2. Start-Zustand festlegen
-	_on_back_to_main_menu()
-
-# --- Logik-Funktionen ---
-
-func _on_start_game() -> void:
-	# 1. Alte Welt löschen, falls sie existiert
-	if current_world:
-		current_world.queue_free()
+	ui_layers[GameState.PAUSED].resumed.connect(func(): change_state(GameState.PLAYING))
+	ui_layers[GameState.PAUSED].quit_to_main.connect(func(): change_state(GameState.MAIN_MENU))
+	ui_layers[GameState.GAME_OVER].quit_to_main.connect(func(): change_state(GameState.MAIN_MENU))
 	
-	# 2. Neue Welt instanziieren
+	ui_layers[GameState.PLAYING].pressed.connect(func(): change_state(GameState.PAUSED))
+	
+	# Initialer Zustand
+	change_state(GameState.MAIN_MENU)
+
+func change_state(new_state: GameState) -> void:
+	current_state = new_state
+	
+	# 1. Sichtbarkeit steuern: Alle verstecken, nur das aktuelle zeigen
+	for state in ui_layers:
+		ui_layers[state].visible = (state == new_state)
+	
+	# 2. Zustands-Logik (Was passiert beim Wechsel?)
+	match new_state:
+		GameState.MAIN_MENU:
+			get_tree().paused = true
+			_clear_world()
+		
+		GameState.PLAYING:
+			get_tree().paused = false
+			if current_world == null: # Falls wir vom Hauptmenü kommen
+				_instantiate_world()
+		
+		GameState.PAUSED:
+			get_tree().paused = true
+			
+		GameState.GAME_OVER:
+			get_tree().paused = true
+
+# --- Hilfsfunktionen ---
+
+func _instantiate_world() -> void:
+	_clear_world()
 	current_world = world_scene.instantiate()
 	add_child(current_world)
-
-	# 3. Wichtig: Die Welt in der Hierarchie hinter die UI schieben
 	move_child(current_world, 0) 
-
-	# 4. Signale der NEUEN Welt verbinden
-	# Wir suchen den Player in der neuen Welt
-	var player = current_world.find_child("Player") 
-	if player:
-		player.died.connect(_on_game_over)
 	
-	# Menü verstecken
-	main_menu.hide()
-	death_menu.hide()
-	pause_menu.hide()
-	pause_button.show()
-	get_tree().paused = false # Spiel laufen lassen
+	var player = current_world.find_child("Player")
+	if player:
+		player.died.connect(func(): change_state(GameState.GAME_OVER))
 
-func _on_game_over() -> void:
-	get_tree().paused = true
-	death_menu.show()
-	pause_button.hide()
-
-func _on_pause_pressed() -> void:
-	# Spiel pausieren und Pausenmenü zeigen
-	get_tree().paused = true
-	pause_menu.show()
-	pause_button.hide()
-
-func _on_resume_game() -> void:
-	# Pause aufheben
-	pause_menu.hide()
-	pause_button.show()
-	get_tree().paused = false
-
-func _on_back_to_main_menu() -> void:
+func _clear_world() -> void:
 	if current_world:
 		current_world.queue_free()
 		current_world = null
+
+func _on_start_requested() -> void:
+	_instantiate_world() # Welt neu bauen
+	change_state(GameState.PLAYING)
 	
-	# Alles verstecken außer das Hauptmenü
-	pause_menu.hide()
-	death_menu.hide()
-	pause_button.hide()
-	main_menu.show()
-	get_tree().paused = true # Im Menü soll sich im Hintergrund nichts bewegen
