@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bau11rbulydv4"
-path="res://.godot/imported/basegreen.png-35e738172991f99d7842269ee7067432.ctex"
+path="res://.godot/imported/basegreen.png-502c527dd25d5717fe6edefcba0d3569.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/basegreen.png"
-dest_files=["res://.godot/imported/basegreen.png-35e738172991f99d7842269ee7067432.ctex"]
+source_file="res://assets/sprites/player/basegreen.png"
+dest_files=["res://.godot/imported/basegreen.png-502c527dd25d5717fe6edefcba0d3569.ctex"]
 
 [params]
 

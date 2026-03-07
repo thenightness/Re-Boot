@@ -1,0 +1,111 @@
+[gd_scene format=3 uid="uid://bckcih402gtep"]
+
+[ext_resource type="Script" uid="uid://beskqecfc1ilh" path="res://scripts/main.gd" id="1_o6xl0"]
+[ext_resource type="PackedScene" uid="uid://clx33ufm8kd11" path="res://scenes/game.tscn" id="1_sugp2"]
+[ext_resource type="PackedScene" uid="uid://csu3vog3rgjfp" path="res://scenes/Menu/pause_menu.tscn" id="2_jyhfs"]
+[ext_resource type="PackedScene" uid="uid://dva32xow3m0le" path="res://scenes/player.tscn" id="2_tbgi4"]
+[ext_resource type="PackedScene" uid="uid://h8qaaypy7tgg" path="res://scenes/Menu/main_menu.tscn" id="3_tbgi4"]
+[ext_resource type="FontFile" uid="uid://bi7jtcxryk3hn" path="res://assets/fonts/BlackOpsOne-Regular.ttf" id="3_tefeu"]
+[ext_resource type="PackedScene" uid="uid://cpeog4l52flls" path="res://scenes/Menu/death_menu.tscn" id="7_tipki"]
+
+[sub_resource type="FontVariation" id="FontVariation_o6xl0"]
+base_font = ExtResource("3_tefeu")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tipki"]
+content_margin_top = 6.0
+bg_color = Color(0.95596343, 0.9559633, 0.95596343, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.09019608, 0.09019608, 0.09019608, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+shadow_size = 2
+shadow_offset = Vector2(1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_85g3d"]
+content_margin_top = 6.0
+bg_color = Color(0.09019608, 0.09019608, 0.09019608, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+shadow_offset = Vector2(1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_choun"]
+content_margin_top = 6.0
+bg_color = Color(0.8039216, 0.8039216, 0.8039216, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.09019608, 0.09019608, 0.09019608, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+shadow_size = 2
+shadow_offset = Vector2(1, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ya4ey"]
+
+[node name="Main" type="Node" unique_id=1885680619]
+script = ExtResource("1_o6xl0")
+
+[node name="World" type="Node2D" parent="." unique_id=1851343503]
+
+[node name="Game" parent="World" unique_id=245446316 instance=ExtResource("1_sugp2")]
+visible = false
+
+[node name="Player2" parent="World" unique_id=1930998785 instance=ExtResource("2_tbgi4")]
+position = Vector2(4, 0)
+
+[node name="Camera2D" type="Camera2D" parent="World/Player2" unique_id=344015239]
+position = Vector2(1, -7)
+zoom = Vector2(4, 4)
+process_callback = 0
+limit_enabled = false
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1023943927]
+
+[node name="PauseMenu" parent="UI" unique_id=1093673393 instance=ExtResource("2_jyhfs")]
+visible = false
+
+[node name="MainMenu" parent="UI" unique_id=1291258226 instance=ExtResource("3_tbgi4")]
+
+[node name="Button_Pause" type="Button" parent="UI" unique_id=504002816]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -102.0
+offset_top = 13.0
+offset_right = -14.0
+offset_bottom = 101.0
+grow_horizontal = 0
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.09019608, 0.09019608, 0.078431375, 1)
+theme_override_colors/font_focus_color = Color(0.09019608, 0.09019608, 0.078431375, 1)
+theme_override_colors/font_pressed_color = Color(0.80700517, 0.8071818, 0.7810686, 1)
+theme_override_colors/font_hover_color = Color(0.09019608, 0.09019608, 0.078431375, 1)
+theme_override_fonts/font = SubResource("FontVariation_o6xl0")
+theme_override_font_sizes/font_size = 63
+theme_override_styles/normal = SubResource("StyleBoxFlat_tipki")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_85g3d")
+theme_override_styles/hover = SubResource("StyleBoxFlat_choun")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ya4ey")
+text = "II"
+
+[node name="DeathMenu" parent="UI" unique_id=1909073110 instance=ExtResource("7_tipki")]
+visible = false
+
+[connection signal="pressed" from="UI/Button_Pause" to="World/Player2" method="_on_pause_pressed"]

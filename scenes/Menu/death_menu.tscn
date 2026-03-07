@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://csu3vog3rgjfp"]
+[gd_scene format=3 uid="uid://cpeog4l52flls"]
 
-[ext_resource type="FontFile" uid="uid://bi7jtcxryk3hn" path="res://assets/fonts/BlackOpsOne-Regular.ttf" id="1_1npuy"]
-[ext_resource type="Script" uid="uid://iqxhblv4oald" path="res://scripts/Menu/pause_menu.gd" id="1_qq3mx"]
+[ext_resource type="Script" uid="uid://iqxhblv4oald" path="res://scripts/Menu/pause_menu.gd" id="1_6jw6y"]
+[ext_resource type="FontFile" uid="uid://bi7jtcxryk3hn" path="res://assets/fonts/BlackOpsOne-Regular.ttf" id="2_31hxx"]
 
 [sub_resource type="Animation" id="Animation_1npuy"]
 length = 0.001
@@ -116,7 +116,7 @@ corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 
 [sub_resource type="FontVariation" id="FontVariation_1npuy"]
-base_font = ExtResource("1_1npuy")
+base_font = ExtResource("2_31hxx")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qq3mx"]
 content_margin_top = 6.0
@@ -161,7 +161,7 @@ corner_radius_bottom_left = 20
 shadow_size = 2
 shadow_offset = Vector2(1, 1)
 
-[node name="PauseMenu" type="Control" unique_id=1909073110]
+[node name="DeathMenu" type="Control" unique_id=1909073110]
 process_mode = 3
 layout_mode = 3
 anchors_preset = 15
@@ -169,7 +169,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_qq3mx")
+script = ExtResource("1_6jw6y")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=33679465]
 modulate = Color(1, 1, 1, 0)
@@ -212,7 +212,7 @@ offset_right = 151.0
 offset_bottom = -131.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_fonts/font = ExtResource("1_1npuy")
+theme_override_fonts/font = ExtResource("2_31hxx")
 theme_override_font_sizes/font_size = 42
 text = "Game paused"
 

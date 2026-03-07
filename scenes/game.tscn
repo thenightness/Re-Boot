@@ -1,9 +1,6 @@
 [gd_scene format=3 uid="uid://clx33ufm8kd11"]
 
-[ext_resource type="PackedScene" uid="uid://dva32xow3m0le" path="res://scenes/player.tscn" id="1_uwrxv"]
 [ext_resource type="Texture2D" uid="uid://bumqay0hpaska" path="res://assets/sprites/factory.png" id="2_yqjtg"]
-[ext_resource type="FontFile" uid="uid://bi7jtcxryk3hn" path="res://assets/fonts/BlackOpsOne-Regular.ttf" id="3_lnu2h"]
-[ext_resource type="PackedScene" uid="uid://csu3vog3rgjfp" path="res://scenes/Menu/pause_menu.tscn" id="4_lbhrr"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lnu2h"]
 texture = ExtResource("2_yqjtg")
@@ -426,97 +423,9 @@ texture = ExtResource("2_yqjtg")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_lnu2h")
 
-[sub_resource type="FontVariation" id="FontVariation_lbhrr"]
-base_font = ExtResource("3_lnu2h")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iywne"]
-content_margin_top = 6.0
-bg_color = Color(0.95596343, 0.9559633, 0.95596343, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.09019608, 0.09019608, 0.09019608, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-shadow_size = 2
-shadow_offset = Vector2(1, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p57ef"]
-content_margin_top = 6.0
-bg_color = Color(0.09019608, 0.09019608, 0.09019608, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-shadow_offset = Vector2(1, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u5sy4"]
-content_margin_top = 6.0
-bg_color = Color(0.8039216, 0.8039216, 0.8039216, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.09019608, 0.09019608, 0.09019608, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-shadow_size = 2
-shadow_offset = Vector2(1, 1)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lnu2h"]
-
 [node name="Game" type="Node2D" unique_id=245446316]
 
 [node name="TileMap" type="TileMap" parent="." unique_id=1141869427]
 tile_set = SubResource("TileSet_lbhrr")
 format = 2
 layer_0/tile_data = PackedInt32Array(65532, 1179648, 0, 65533, 1179648, 0, 65535, 1179648, 0, 65534, 1179648, 0, 0, 1179648, 0, 1, 1179648, 0, 2, 1179648, 0, 3, 1179648, 0, 6, 1179648, 0, 7, 1179648, 0, 8, 1179648, 0, 9, 1179648, 0, -65524, 1310720, 3, -131060, 1310720, 3, -196596, 1310720, 3, -262132, 1310720, 3, -196600, 1310720, 3, -262136, 1310720, 3, -327672, 1310720, 3, -393208, 1310720, 3, 4, 1179648, 0, 5, 1179648, 0, 10, 1179648, 0, 11, 1179648, 0, 12, 1179648, 0, 13, 1179648, 0, 15, 1179648, 0, 14, 1179648, 0)
-
-[node name="Player" parent="." unique_id=1930998785 instance=ExtResource("1_uwrxv")]
-position = Vector2(4, 0)
-
-[node name="CanvasLayer" type="CanvasLayer" parent="Player" unique_id=636812842]
-
-[node name="Button_Pause" type="Button" parent="Player/CanvasLayer" unique_id=1843978904]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -102.0
-offset_top = 13.0
-offset_right = -14.0
-offset_bottom = 101.0
-grow_horizontal = 0
-size_flags_vertical = 3
-theme_override_colors/font_color = Color(0.09019608, 0.09019608, 0.078431375, 1)
-theme_override_colors/font_focus_color = Color(0.09019608, 0.09019608, 0.078431375, 1)
-theme_override_colors/font_pressed_color = Color(0.80700517, 0.8071818, 0.7810686, 1)
-theme_override_colors/font_hover_color = Color(0.09019608, 0.09019608, 0.078431375, 1)
-theme_override_fonts/font = SubResource("FontVariation_lbhrr")
-theme_override_font_sizes/font_size = 63
-theme_override_styles/normal = SubResource("StyleBoxFlat_iywne")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_p57ef")
-theme_override_styles/hover = SubResource("StyleBoxFlat_u5sy4")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_lnu2h")
-text = "II"
-
-[node name="PauseMenu" parent="Player/CanvasLayer" unique_id=1909073110 instance=ExtResource("4_lbhrr")]
-modulate = Color(1, 1, 1, 0)
-
-[node name="Camera2D" type="Camera2D" parent="Player" unique_id=2087582182]
-position = Vector2(1, -7)
-zoom = Vector2(4, 4)
-process_callback = 0
-limit_enabled = false
-position_smoothing_enabled = true
-position_smoothing_speed = 8.0
-
-[connection signal="pressed" from="Player/CanvasLayer/Button_Pause" to="Player" method="_on_pause_pressed"]

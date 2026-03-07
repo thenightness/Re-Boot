@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 # 1. Define the possible states [cite: 62]
-enum States {IDLE, WALK, AIR, WALL_HANG, PAUSE}
+enum States {IDLE, WALK, AIR, WALL_HANG, LOCKED}
 
 # 2. Track the current state with a setter for "enter/exit" logic [cite: 63, 77]
 var state: States = States.IDLE: set = set_state 
@@ -77,14 +77,20 @@ func set_state(new_state: States) -> void:
 	# Optional: Logic for when a state starts
 	match state:
 		States.IDLE:
+			$AnimatedSprite2D.play("IDLE")
 			print("Entered Idle")
+			#$AnimationPlayer.play("IDLE")
+		States.WALK:
+			$AnimatedSprite2D.play("WALK")
 		States.AIR:
+			$AnimatedSprite2D.play("WALK")
 			print("Entered Air")
 		States.WALL_HANG:
+			$AnimatedSprite2D.play("WALL_HANG")
 			print("Started Wall Hanging")
-		States.PAUSE:
-			get_tree().paused = true
+		States.LOCKED:
+			pass
 
 
 func _on_pause_pressed() -> void:
-	state = States.PAUSE
+	state = States.LOCKED
