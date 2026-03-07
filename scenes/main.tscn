@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://ctwf86c7s3mqh" path="res://scenes/world.tscn" id="2_tefeu"]
 [ext_resource type="PackedScene" uid="uid://h8qaaypy7tgg" path="res://scenes/Menu/main_menu.tscn" id="3_tbgi4"]
 [ext_resource type="FontFile" uid="uid://bi7jtcxryk3hn" path="res://assets/fonts/BlackOpsOne-Regular.ttf" id="3_tefeu"]
+[ext_resource type="PackedScene" uid="uid://d20spux633h14" path="res://scenes/Menu/finished_menu.tscn" id="7_o6xl0"]
 [ext_resource type="PackedScene" uid="uid://csb4t210y7v21" path="res://scenes/Menu/death_menu.tscn" id="7_tipki"]
 
 [sub_resource type="FontVariation" id="FontVariation_o6xl0"]
@@ -92,3 +93,5 @@ visible = false
 
 [node name="DeathMenu" parent="UI" unique_id=803870423 instance=ExtResource("7_tipki")]
 visible = false
+
+[node name="FinishedMenu" parent="UI" unique_id=191311353 instance=ExtResource("7_o6xl0")]

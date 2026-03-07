@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 signal died
+signal finished
 
 # 1. Define the possible states [cite: 62]
 enum States {IDLE, WALK, AIR, WALL_HANG}
@@ -12,6 +13,7 @@ const walkSpeed = 100.0
 const pushSpeed = 200.0
 const jump_velocity = -300.0
 var is_dead: bool = false
+var is_finished: bool = false
 
 func _ready() -> void:
 	$Camera2D.make_current()
@@ -72,7 +74,7 @@ func _physics_process(delta: float) -> void:
 				state = States.AIR
 	move_and_slide()
 	
-	# --- Spike-Kollisionsprüfung ---
+	# --- Spike-Kollisionsprüfung ---Tilemap
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
 		var collider = collision.get_collider()
@@ -112,3 +114,8 @@ func die():
 	if is_dead: return # Wenn schon tot, dann nichts tun!
 	is_dead = true
 	died.emit()
+
+func finish():
+	if is_finished: return
+	is_finished = true
+	finished.emit()

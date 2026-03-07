@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://csb4t210y7v21"]
+[gd_scene format=3 uid="uid://d20spux633h14"]
 
-[ext_resource type="Script" uid="uid://b2an6qb5x8ipj" path="res://scripts/Menu/death_menu.gd" id="1_6jw6y"]
-[ext_resource type="FontFile" uid="uid://bi7jtcxryk3hn" path="res://assets/fonts/BlackOpsOne-Regular.ttf" id="2_f6lct"]
+[ext_resource type="Script" uid="uid://b3lfmwhd8jln8" path="res://scripts/Menu/finished_menu.gd" id="1_p3g8a"]
+[ext_resource type="FontFile" uid="uid://bi7jtcxryk3hn" path="res://assets/fonts/BlackOpsOne-Regular.ttf" id="2_t1jt1"]
 
 [sub_resource type="Animation" id="Animation_1npuy"]
 length = 0.001
@@ -116,7 +116,7 @@ corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 
 [sub_resource type="FontVariation" id="FontVariation_1npuy"]
-base_font = ExtResource("2_f6lct")
+base_font = ExtResource("2_t1jt1")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qq3mx"]
 content_margin_top = 6.0
@@ -161,7 +161,7 @@ corner_radius_bottom_left = 20
 shadow_size = 2
 shadow_offset = Vector2(1, 1)
 
-[node name="DeathMenu" type="Control" unique_id=1909073110]
+[node name="FinishedMenu" type="Control" unique_id=1909073110]
 process_mode = 3
 layout_mode = 3
 anchors_preset = 15
@@ -169,7 +169,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_6jw6y")
+script = ExtResource("1_p3g8a")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=33679465]
 modulate = Color(1, 1, 1, 0)
@@ -191,10 +191,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -233.5
-offset_top = -115.25
-offset_right = 233.5
-offset_bottom = 115.25
+offset_left = -558.0
+offset_top = -110.0
+offset_right = -91.0
+offset_bottom = 120.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_wq4gw")
@@ -212,9 +212,9 @@ offset_right = 220.0
 offset_bottom = -2.25
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_fonts/font = ExtResource("2_f6lct")
+theme_override_fonts/font = ExtResource("2_t1jt1")
 theme_override_font_sizes/font_size = 60
-text = "YOU SUCK"
+text = "Finished"
 horizontal_alignment = 1
 
 [node name="Button_Quit_To_Main" type="Button" parent="Panel" unique_id=1917878996]
@@ -226,7 +226,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -219.0
 offset_top = 16.25
-offset_right = -8.0
+offset_right = 219.5
 offset_bottom = 104.25
 grow_horizontal = 2
 grow_vertical = 2
@@ -240,31 +240,6 @@ theme_override_font_sizes/font_size = 42
 theme_override_styles/normal = SubResource("StyleBoxFlat_qq3mx")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_1npuy")
 theme_override_styles/hover = SubResource("StyleBoxFlat_wd0t7")
-text = "Main"
+text = "OK"
 
-[node name="Button_Restart" type="Button" parent="Panel" unique_id=79923723]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_top = 16.25
-offset_right = 221.5
-offset_bottom = 104.25
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_vertical = 3
-theme_override_colors/font_color = Color(0.09019608, 0.09019608, 0.078431375, 1)
-theme_override_colors/font_focus_color = Color(0.09019608, 0.09019608, 0.078431375, 1)
-theme_override_colors/font_pressed_color = Color(0.80700517, 0.8071818, 0.7810686, 1)
-theme_override_colors/font_hover_color = Color(0.09019608, 0.09019608, 0.078431375, 1)
-theme_override_fonts/font = SubResource("FontVariation_1npuy")
-theme_override_font_sizes/font_size = 42
-theme_override_styles/normal = SubResource("StyleBoxFlat_qq3mx")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_1npuy")
-theme_override_styles/hover = SubResource("StyleBoxFlat_wd0t7")
-text = "Restart"
-
-[connection signal="pressed" from="Panel/Button_Quit_To_Main" to="." method="_on_quit_to_main_pressed"]
-[connection signal="pressed" from="Panel/Button_Restart" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="Panel/Button_Quit_To_Main" to="." method="_on_button_quit_to_main_pressed"]

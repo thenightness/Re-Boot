@@ -15,6 +15,10 @@ run/main_scene="uid://bckcih402gtep"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="uid://c6tat2ig6v03u"
 
+[editor]
+
+movie_writer/movie_file="/home/andre/Videos/Godot/demo.ogv"
+
 [input]
 
 ui_left={
