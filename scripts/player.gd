@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 # 1. Define the possible states [cite: 62]
-enum States {IDLE, WALK, AIR, WALL_HANG}
+enum States {IDLE, WALK, AIR, WALL_HANG, PAUSE}
 
 # 2. Track the current state with a setter for "enter/exit" logic [cite: 63, 77]
 var state: States = States.IDLE: set = set_state 
@@ -57,7 +57,6 @@ func _physics_process(delta: float) -> void:
 
 		States.WALL_HANG:
 			var wall_normal = get_wall_normal()
-			print(wall_normal)
 			# Wall Kick Logic
 			if (wall_normal.x > 0 and input_direction > 0) or (wall_normal.x < 0 and input_direction < 0):
 				velocity.x = wall_normal.x * pushSpeed
@@ -66,17 +65,26 @@ func _physics_process(delta: float) -> void:
 			# Let go of wall
 			elif not is_on_wall() or not Input.is_action_pressed("ui_up"):
 				state = States.AIR
-
 	move_and_slide()
 
 # 3. Enter/Exit logic for animations or special values [cite: 78, 83]
 func set_state(new_state: States) -> void:
+	if state == new_state:
+		return
 	var previous_state := state
 	state = new_state
 	
-	# Optional: Logic for when a state starts [cite: 83, 85]
-	#match state:
-	#	States.IDLE:
-		#	print("Entered Idle")
-	#	States.WALL_HANG:
-		#	print("Started Wall Hanging")
+	# Optional: Logic for when a state starts
+	match state:
+		States.IDLE:
+			print("Entered Idle")
+		States.AIR:
+			print("Entered Air")
+		States.WALL_HANG:
+			print("Started Wall Hanging")
+		States.PAUSE:
+			get_tree().paused = true
+
+
+func _on_pause_pressed() -> void:
+	state = States.PAUSE
