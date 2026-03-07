@@ -2,18 +2,13 @@ extends Control
 
 signal resumed
 signal quit_to_main
+signal restart
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass
-
-func _on_resume_button_pressed():
+func _on_resume_pressed() -> void:
 	resumed.emit()
-	
-func _on_quit_to_main_pressed():
+
+func _on_quit_to_main_pressed() -> void:
 	quit_to_main.emit()
+
+func _on_restart_pressed() -> void:
+	restart.emit()

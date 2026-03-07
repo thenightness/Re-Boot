@@ -190,3 +190,11 @@ visible = false
 position = Vector2(0, -8)
 texture = ExtResource("2_dqkch")
 hframes = 5
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=216719048]
+position = Vector2(1, -7)
+zoom = Vector2(4, 4)
+process_callback = 0
+limit_enabled = false
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0

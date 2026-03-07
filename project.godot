@@ -13,7 +13,7 @@ config_version=5
 config/name="Project: RE-BOOT"
 run/main_scene="uid://bckcih402gtep"
 config/features=PackedStringArray("4.6", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="uid://c6tat2ig6v03u"
 
 [input]
 

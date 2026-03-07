@@ -1,7 +1,9 @@
 extends CharacterBody2D
 
+signal died
+
 # 1. Define the possible states [cite: 62]
-enum States {IDLE, WALK, AIR, WALL_HANG, LOCKED}
+enum States {IDLE, WALK, AIR, WALL_HANG}
 
 # 2. Track the current state with a setter for "enter/exit" logic [cite: 63, 77]
 var state: States = States.IDLE: set = set_state 
@@ -10,9 +12,11 @@ const walkSpeed = 100.0
 const pushSpeed = 200.0
 const jump_velocity = -300.0
 
+func _ready() -> void:
+	$Camera2D.make_current()
+
 func _physics_process(delta: float) -> void:
 	var input_direction := Input.get_axis("ui_left", "ui_right")
-	
 	# --- PHYSICAL LOGIC (How we move in the current state) ---
 	match state:
 		States.IDLE, States.WALK:
@@ -66,12 +70,27 @@ func _physics_process(delta: float) -> void:
 			elif not is_on_wall() or not Input.is_action_pressed("ui_up"):
 				state = States.AIR
 	move_and_slide()
+	
+	# --- Spike-Kollisionsprüfung ---
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
+		# Prüfen, ob wir eine TileMapLayer berührt haben
+		if collider is TileMapLayer:
+			# Die Position des Aufpralls leicht in das Tile hinein verschieben,
+			# um sicherzugehen, dass wir das richtige Tile treffen.
+			var collision_point = collision.get_position() - collision.get_normal()
+			var tile_pos = collider.local_to_map(collider.to_local(collision_point))
+			var tile_data = collider.get_cell_tile_data(tile_pos)
+			# Prüfen, ob das Tile die "is_lethal" Eigenschaft hat
+			if tile_data and tile_data.get_custom_data("is_lethal"):
+				died.emit()
+				break
 
 # 3. Enter/Exit logic for animations or special values [cite: 78, 83]
 func set_state(new_state: States) -> void:
 	if state == new_state:
 		return
-	var previous_state := state
 	state = new_state
 	
 	# Optional: Logic for when a state starts
@@ -79,7 +98,6 @@ func set_state(new_state: States) -> void:
 		States.IDLE:
 			$AnimatedSprite2D.play("IDLE")
 			print("Entered Idle")
-			#$AnimationPlayer.play("IDLE")
 		States.WALK:
 			$AnimatedSprite2D.play("WALK")
 		States.AIR:
@@ -88,9 +106,3 @@ func set_state(new_state: States) -> void:
 		States.WALL_HANG:
 			$AnimatedSprite2D.play("WALL_HANG")
 			print("Started Wall Hanging")
-		States.LOCKED:
-			pass
-
-
-func _on_pause_pressed() -> void:
-	state = States.LOCKED
