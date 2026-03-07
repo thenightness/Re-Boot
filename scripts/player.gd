@@ -11,6 +11,7 @@ var state: States = States.IDLE: set = set_state
 const walkSpeed = 100.0
 const pushSpeed = 200.0
 const jump_velocity = -300.0
+var is_dead: bool = false
 
 func _ready() -> void:
 	$Camera2D.make_current()
@@ -84,7 +85,7 @@ func _physics_process(delta: float) -> void:
 			var tile_data = collider.get_cell_tile_data(tile_pos)
 			# Prüfen, ob das Tile die "is_lethal" Eigenschaft hat
 			if tile_data and tile_data.get_custom_data("is_lethal"):
-				died.emit()
+				die()
 				break
 
 # 3. Enter/Exit logic for animations or special values [cite: 78, 83]
@@ -106,3 +107,8 @@ func set_state(new_state: States) -> void:
 		States.WALL_HANG:
 			$AnimatedSprite2D.play("WALL_HANG")
 			print("Started Wall Hanging")
+			
+func die():
+	if is_dead: return # Wenn schon tot, dann nichts tun!
+	is_dead = true
+	died.emit()

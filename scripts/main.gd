@@ -14,8 +14,10 @@ func _ready() -> void:
 	# 1. Signale verbinden
 	main_menu.start_game.connect(_on_start_game)
 	pause_menu.restart.connect(_on_start_game)
+	death_menu.restart.connect(_on_start_game)
 	pause_menu.resumed.connect(_on_resume_game)
 	pause_menu.quit_to_main.connect(_on_back_to_main_menu)
+	death_menu.quit_to_main.connect(_on_back_to_main_menu)
 	pause_button.pressed.connect(_on_pause_pressed)
 	
 	# 2. Start-Zustand festlegen
@@ -37,7 +39,7 @@ func _on_start_game() -> void:
 
 	# 4. Signale der NEUEN Welt verbinden
 	# Wir suchen den Player in der neuen Welt
-	var player = current_world.find_child("Player") # Stelle sicher, dass dein Player-Node so heißt
+	var player = current_world.find_child("Player") 
 	if player:
 		player.died.connect(_on_game_over)
 	

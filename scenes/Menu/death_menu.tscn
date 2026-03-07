@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://csb4t210y7v21"]
 
-[ext_resource type="Script" uid="uid://iqxhblv4oald" path="res://scripts/Menu/pause_menu.gd" id="1_7te2s"]
+[ext_resource type="Script" uid="uid://b2an6qb5x8ipj" path="res://scripts/Menu/death_menu.gd" id="1_6jw6y"]
 [ext_resource type="FontFile" uid="uid://bi7jtcxryk3hn" path="res://assets/fonts/BlackOpsOne-Regular.ttf" id="2_f6lct"]
 
 [sub_resource type="Animation" id="Animation_1npuy"]
@@ -169,7 +169,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_7te2s")
+script = ExtResource("1_6jw6y")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=33679465]
 modulate = Color(1, 1, 1, 0)

@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://ctwf86c7s3mqh" path="res://scenes/world.tscn" id="2_tefeu"]
 [ext_resource type="PackedScene" uid="uid://h8qaaypy7tgg" path="res://scenes/Menu/main_menu.tscn" id="3_tbgi4"]
 [ext_resource type="FontFile" uid="uid://bi7jtcxryk3hn" path="res://assets/fonts/BlackOpsOne-Regular.ttf" id="3_tefeu"]
-[ext_resource type="PackedScene" uid="uid://cpeog4l52flls" path="res://scenes/Menu/death_menu.tscn" id="7_tipki"]
+[ext_resource type="PackedScene" uid="uid://csb4t210y7v21" path="res://scenes/Menu/death_menu.tscn" id="7_tipki"]
 
 [sub_resource type="FontVariation" id="FontVariation_o6xl0"]
 base_font = ExtResource("3_tefeu")
@@ -65,6 +65,7 @@ world_scene = ExtResource("2_tefeu")
 process_mode = 3
 
 [node name="Button_Pause" type="Button" parent="UI" unique_id=504002816]
+visible = false
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -87,5 +88,7 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_ya4ey")
 text = "II"
 
 [node name="PauseMenu" parent="UI" unique_id=1909073110 instance=ExtResource("2_jyhfs")]
+visible = false
 
 [node name="DeathMenu" parent="UI" unique_id=803870423 instance=ExtResource("7_tipki")]
+visible = false
