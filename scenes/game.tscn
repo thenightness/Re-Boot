@@ -1,5 +1,6 @@
 [gd_scene format=4 uid="uid://clx33ufm8kd11"]
 
+[ext_resource type="Texture2D" uid="uid://bm4jvwa72b6ni" path="res://assets/sprites/background_game.png" id="1_iywne"]
 [ext_resource type="PackedScene" uid="uid://dl4ljonicg5ek" path="res://scenes/Small Nodes/FinishArea.tscn" id="2_lnu2h"]
 [ext_resource type="Texture2D" uid="uid://bumqay0hpaska" path="res://assets/sprites/factory.png" id="2_yqjtg"]
 [ext_resource type="Script" uid="uid://mgub2jft18dj" path="res://scripts/Small Nodes/path_follow_2d.gd" id="3_lbhrr"]
@@ -517,6 +518,14 @@ point_count = 2
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_lbhrr"]
 
 [node name="Game" type="Node2D" unique_id=245446316]
+
+[node name="Parallax2D" type="Parallax2D" parent="." unique_id=1377782472]
+repeat_size = Vector2(2048, 2048)
+repeat_times = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Parallax2D" unique_id=1306824961]
+position = Vector2(368, 228)
+texture = ExtResource("1_iywne")
 
 [node name="Tilemap" type="TileMapLayer" parent="." unique_id=1057489191]
 use_parent_material = true

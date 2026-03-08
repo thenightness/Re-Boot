@@ -19,6 +19,11 @@ config/icon="uid://c6tat2ig6v03u"
 
 SoundManager="*uid://eyypuyu08rmm"
 
+[display]
+
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
 [editor]
 
 movie_writer/movie_file="/home/andre/Videos/Godot/demo.ogv"
