@@ -214,7 +214,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("2_f6lct")
 theme_override_font_sizes/font_size = 60
-text = "YOU SUCK"
+text = "GAME OVER"
 horizontal_alignment = 1
 
 [node name="Button_Quit_To_Main" type="Button" parent="Panel" unique_id=1917878996]

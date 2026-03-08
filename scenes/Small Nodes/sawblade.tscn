@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://bo7ghv3p44o4c"]
+
+[ext_resource type="Script" uid="uid://bj5kqc50vjaa0" path="res://scripts/Small Nodes/sawblade.gd" id="1_fykf5"]
+[ext_resource type="Texture2D" uid="uid://c81o0udgwmjxx" path="res://assets/sprites/saw_blade.png" id="1_tnjtq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fykf5"]
+radius = 13.038404
+
+[sub_resource type="Animation" id="Animation_kqa5g"]
+
+[sub_resource type="Animation" id="Animation_tr4u2"]
+resource_name = "Rotation"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.2831855]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jjh3x"]
+_data = {
+&"RESET": SubResource("Animation_kqa5g"),
+&"Rotation": SubResource("Animation_tr4u2")
+}
+
+[sub_resource type="Gradient" id="Gradient_fykf5"]
+offsets = PackedFloat32Array(0, 0.08550186, 0.1747212, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.3866171, 0.3866171, 0.3866171, 1, 0.71375465, 0.71375465, 0.71375465, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_kqa5g"]
+gradient = SubResource("Gradient_fykf5")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_tr4u2"]
+lifetime_randomness = 0.5
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 80.316
+initial_velocity_min = 100.0
+initial_velocity_max = 200.0
+gravity = Vector3(0, 400, 0)
+color = Color(1, 0.69411767, 0, 0.80784315)
+color_ramp = SubResource("GradientTexture1D_kqa5g")
+
+[node name="SawBlade" type="Area2D" unique_id=31800218]
+position = Vector2(63, 55)
+script = ExtResource("1_fykf5")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=783982888]
+texture = ExtResource("1_tnjtq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=40398225]
+shape = SubResource("CircleShape2D_fykf5")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=126579441]
+libraries/ = SubResource("AnimationLibrary_jjh3x")
+autoplay = &"Rotation"
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=1682605170]
+position = Vector2(0, 13)
+process_material = SubResource("ParticleProcessMaterial_tr4u2")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

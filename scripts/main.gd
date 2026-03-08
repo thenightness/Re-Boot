@@ -1,6 +1,8 @@
 extends Node
 
 @export var world_scene: PackedScene
+@export var menu_music: AudioStream
+@export var game_music: AudioStream
 
 # Enums machen den Code lesbar
 enum GameState { MAIN_MENU, PLAYING, PAUSED, GAME_OVER, GAME_FINISHED}
@@ -44,10 +46,13 @@ func change_state(new_state: GameState) -> void:
 	match new_state:
 		GameState.MAIN_MENU:
 			_clear_world()
-		
+			if menu_music:
+				SoundManager.play_music(menu_music)
 		GameState.PLAYING:
 			if current_world == null: # Falls wir vom Hauptmenü kommen
 				_instantiate_world()
+			if game_music:
+				SoundManager.play_music(game_music)
 # --- Hilfsfunktionen ---
 
 func _on_start_requested() -> void:

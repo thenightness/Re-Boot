@@ -4,50 +4,65 @@ signal died
 signal finished
 
 # 1. Define the possible states [cite: 62]
-enum States {IDLE, WALK, AIR, WALL_HANG}
+enum States {IDLE, WALK, AIR, WALL_SLIDE, DEAD, FINISHED}
 
 # 2. Track the current state with a setter for "enter/exit" logic [cite: 63, 77]
-var state: States = States.IDLE: set = set_state 
+var state: States = States.AIR: set = set_state 
 
-const walkSpeed = 100.0
-const pushSpeed = 200.0
+const walk_speed = 100.0
+const push_speed = 200.0
+const wall_slide_speed = 40.0
 const jump_velocity = -300.0
 var is_dead: bool = false
 var is_finished: bool = false
+
+@export var jump_sounds: Array[AudioStream] = []
+@export var walk_sound: AudioStream
+@export var death_sound: AudioStream
+@export var finished_sound: AudioStream
+
+@onready var animated_sprite = $AnimatedSprite2D
+@onready var footstep_player = $FootstepPlayer
+@onready var wall_slide_player = $Wall_SlidePlayer
 
 func _ready() -> void:
 	$Camera2D.make_current()
 
 func _physics_process(delta: float) -> void:
+	if state == States.DEAD or state == States.FINISHED:
+		return
+	
 	var input_direction := Input.get_axis("ui_left", "ui_right")
+	
+	# --- GLOBALE GRAVITATION ---
+	if not is_on_floor() and state != States.WALL_SLIDE:
+		velocity += get_gravity() * delta
+		
 	# --- PHYSICAL LOGIC (How we move in the current state) ---
 	match state:
 		States.IDLE, States.WALK:
-			velocity.x = input_direction * walkSpeed
-			if not is_on_floor(): 
-				velocity += get_gravity() * delta
-			if input_direction != 0:
-				$AnimatedSprite2D.scale.x = input_direction
+			velocity.x = input_direction * walk_speed
 			
 		States.AIR:
-			velocity.x = input_direction * pushSpeed
-			velocity += get_gravity() * delta
-			if input_direction != 0:
-				$AnimatedSprite2D.scale.x = input_direction
+			velocity.x = input_direction * push_speed
 			
-		States.WALL_HANG:
-			# Gravity override logic from your original code
+		States.WALL_SLIDE:
+			# Gravity override logic
 			if velocity.y > 0:
 				velocity.y = 0
 			else:
-				velocity.y += 40
+				velocity.y += wall_slide_speed
+
+	# Sprite-Richtung updaten
+	if input_direction != 0:
+		animated_sprite.flip_h = input_direction < 0
 
 	# --- TRANSITION LOGIC (When to switch states) [cite: 71, 72] ---
 	match state:
 		States.IDLE, States.WALK:
 			if Input.is_action_pressed("ui_up"):
 				velocity.y = jump_velocity
-				velocity.x = input_direction * pushSpeed
+				velocity.x = input_direction * push_speed
 				state = States.AIR
 			elif not is_on_floor():
 				state = States.AIR
@@ -60,13 +75,13 @@ func _physics_process(delta: float) -> void:
 			if is_on_floor():
 				state = States.IDLE
 			elif is_on_wall() and Input.is_action_pressed("ui_up"):
-				state = States.WALL_HANG
+				state = States.WALL_SLIDE
 
-		States.WALL_HANG:
+		States.WALL_SLIDE:
 			var wall_normal = get_wall_normal()
 			# Wall Kick Logic
 			if (wall_normal.x > 0 and input_direction > 0) or (wall_normal.x < 0 and input_direction < 0):
-				velocity.x = wall_normal.x * pushSpeed
+				velocity.x = wall_normal.x * push_speed
 				velocity.y = jump_velocity
 				state = States.AIR
 			# Let go of wall
@@ -96,7 +111,15 @@ func set_state(new_state: States) -> void:
 		return
 	state = new_state
 	
-	# Optional: Logic for when a state starts
+	if new_state != States.WALK:
+		footstep_player.stop()
+	else:
+		footstep_player.play()
+	
+	if new_state != States.WALL_SLIDE:
+		wall_slide_player.stop()
+	else:
+		wall_slide_player.play()
 	match state:
 		States.IDLE:
 			$AnimatedSprite2D.play("IDLE")
@@ -104,18 +127,42 @@ func set_state(new_state: States) -> void:
 		States.WALK:
 			$AnimatedSprite2D.play("WALK")
 		States.AIR:
+			if jump_sounds.size() > 0:
+				var random_jump = jump_sounds.pick_random()
+				SoundManager.play_sfx(random_jump)
 			$AnimatedSprite2D.play("WALK")
 			print("Entered Air")
-		States.WALL_HANG:
-			$AnimatedSprite2D.play("WALL_HANG")
+		States.WALL_SLIDE:
+			$AnimatedSprite2D.play("WALL_SLIDE")
 			print("Started Wall Hanging")
 			
 func die():
 	if is_dead: return # Wenn schon tot, dann nichts tun!
 	is_dead = true
+	# 1. Steuerung und Physik deaktivieren
+	set_physics_process(false)
+	collision_layer = 0
+	
+	if death_sound:
+		SoundManager.play_sfx(death_sound)
+	$AnimatedSprite2D.play("DEATH")
+	await $AnimatedSprite2D.animation_finished
 	died.emit()
 
 func finish():
 	if is_finished: return
 	is_finished = true
+	
+	if finished_sound:
+		SoundManager.play_sfx(finished_sound)
+	await get_tree().create_timer(5).timeout
+	
+	# 1. Steuerung und Physik deaktivieren
+	set_physics_process(false)
+	collision_layer = 0
+	
+	if death_sound:
+		SoundManager.play_sfx(death_sound)
+	$AnimatedSprite2D.play("DEATH")
+	await $AnimatedSprite2D.animation_finished
 	finished.emit()
