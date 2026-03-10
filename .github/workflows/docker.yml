@@ -34,6 +34,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.REGISTRY }}/${{ github.repository }}:latest
+          tags: ${{ env.REGISTRY }}/re-boot:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
