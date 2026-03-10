@@ -37,3 +37,4 @@ jobs:
           tags: ${{ env.REGISTRY }}/thenightness/re-boot:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          plattforms: linux/amd64,linux/arm64

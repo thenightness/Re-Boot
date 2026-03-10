@@ -9,17 +9,26 @@ RUN apt-get update && apt-get install -y \
 # Godot Versioning
 ENV GODOT_VERSION="4.6.1"
 ENV RELEASE_NAME="stable"
+ARG TARGETARCH
 
 # Download Godot and Web Templates
-RUN wget https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-${RELEASE_NAME}/Godot_v${GODOT_VERSION}-${RELEASE_NAME}_linux.x86_64.zip \
-    && wget https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-${RELEASE_NAME}/Godot_v${GODOT_VERSION}-${RELEASE_NAME}_export_templates.tpz
+RUN if [ "$TARGETARCH" = "amd64" ]; then \
+        export GODOT_ARCH="linux.x86_64"; \
+    elif [ "$TARGETARCH" = "arm64" ]; then \
+        export GODOT_ARCH="linux.arm64"; \
+    fi && \
+    wget https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-${RELEASE_NAME}/Godot_v${GODOT_VERSION}-${RELEASE_NAME}_${GODOT_ARCH}.zip -O godot.zip && \
+    unzip godot.zip -d /usr/local/bin && \
+    mv /usr/local/bin/Godot_v${GODOT_VERSION}-${RELEASE_NAME}_${GODOT_ARCH} /usr/local/bin/godot && \
+    rm godot.zip
+    
 
 # Setup Templates (Required for the export to function)
-RUN mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${RELEASE_NAME} \
-    && unzip Godot_v${GODOT_VERSION}-${RELEASE_NAME}_linux.x86_64.zip -d /usr/local/bin \
-    && mv /usr/local/bin/Godot_v${GODOT_VERSION}-${RELEASE_NAME}_linux.x86_64 /usr/local/bin/godot \
-    && unzip Godot_v${GODOT_VERSION}-${RELEASE_NAME}_export_templates.tpz \
-    && mv templates/* ~/.local/share/godot/export_templates/${GODOT_VERSION}.${RELEASE_NAME}
+RUN wget https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-${RELEASE_NAME}/Godot_v${GODOT_VERSION}-${RELEASE_NAME}_export_templates.tpz && \
+    mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${RELEASE_NAME} && \
+    unzip Godot_v${GODOT_VERSION}-${RELEASE_NAME}_export_templates.tpz && \
+    mv templates/* ~/.local/share/godot/export_templates/${GODOT_VERSION}.${RELEASE_NAME} && \
+    rm Godot_v${GODOT_VERSION}-${RELEASE_NAME}_export_templates.tpz
 
 WORKDIR /src
 COPY . .
