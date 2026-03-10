@@ -39,16 +39,24 @@ RUN mkdir -p build/web
 RUN godot --headless --export-release "Web" build/web/index.html
 
 # --- Stage 2: The Tiny Server ---
-FROM busybox:latest
+FROM nginx:alpine
 
-# Create a non-root user for security
-RUN adduser -D static
-USER static
-WORKDIR /home/static
+# 1. Create a mini config file for Nginx to inject your headers
+RUN echo 'server { \
+    listen 8080; \
+    server_name localhost; \
+    root /usr/share/nginx/html; \
+    index index.html; \
+    location / { \
+        add_header "Cross-Origin-Opener-Policy" "same-origin"; \
+        add_header "Cross-Origin-Embedder-Policy" "require-corp"; \
+        add_header "Access-Control-Allow-Origin" "*"; \
+        try_files $uri $uri/ /index.html; \
+    } \
+}' > /etc/nginx/conf.d/default.conf
 
-# Copy only the web artifacts from the builder
-COPY --from=builder /src/build/web .
+# 2. Copy the web artifacts from the builder
+COPY --from=builder /src/build/web /usr/share/nginx/html
 
-# Serve the files on port 8080
-# -p: port, -h: home directory, -f: run in foreground
-CMD ["httpd", "-f", "-p", "8080", "-h", "/home/static"]
+EXPOSE 8080
+CMD ["nginx", "-g", "daemon off;"]
