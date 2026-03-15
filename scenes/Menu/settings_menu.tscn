@@ -2,6 +2,7 @@
 
 [ext_resource type="FontFile" uid="uid://bi7jtcxryk3hn" path="res://assets/fonts/BlackOpsOne-Regular.ttf" id="1_1npuy"]
 [ext_resource type="Script" uid="uid://cwlsh1cbts20y" path="res://scripts/Menu/settings_menu.gd" id="1_y2qao"]
+[ext_resource type="Script" uid="uid://dac6kuj2am7c7" path="res://scenes/Menu/audio_control.gd" id="3_v0mso"]
 
 [sub_resource type="Animation" id="Animation_1npuy"]
 length = 0.001
@@ -161,6 +162,20 @@ corner_radius_bottom_left = 20
 shadow_size = 2
 shadow_offset = Vector2(1, 1)
 
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_y2qao"]
+color = Color(0.95686275, 0.95686275, 0.95686275, 1)
+grow_begin = -3.0
+grow_end = -3.0
+thickness = 4
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_v0mso"]
+color = Color(0.8745098, 0.5411765, 0.60784316, 1)
+thickness = 4
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_vo6u3"]
+color = Color(0.87316537, 0.5424906, 0.6080924, 1)
+thickness = 4
+
 [node name="SettingsMenu" type="Control" unique_id=1909073110]
 process_mode = 3
 layout_mode = 3
@@ -233,4 +248,84 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_1npuy")
 theme_override_styles/hover = SubResource("StyleBoxFlat_wd0t7")
 text = "X"
 
+[node name="Music" type="Label" parent="Panel" unique_id=1961327675]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -203.0
+offset_top = -104.5
+offset_right = -100.0
+offset_bottom = -72.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_1npuy")
+theme_override_font_sizes/font_size = 25
+text = "Music:"
+
+[node name="AudioControlMusic" type="HSlider" parent="Panel" unique_id=1635459543]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -69.25
+offset_top = -106.75
+offset_right = 179.25
+offset_bottom = -70.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/slider = SubResource("StyleBoxLine_y2qao")
+theme_override_styles/grabber_area = SubResource("StyleBoxLine_v0mso")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxLine_vo6u3")
+max_value = 1.0
+step = 0.05
+value = 1.0
+script = ExtResource("3_v0mso")
+audio_bus_name = "Music"
+
+[node name="Sounds" type="Label" parent="Panel" unique_id=305258847]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -202.5
+offset_top = -49.875
+offset_right = -86.0
+offset_bottom = -17.875
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_1npuy")
+theme_override_font_sizes/font_size = 25
+text = "Sounds:"
+
+[node name="AudioControlSFX" type="HSlider" parent="Panel" unique_id=1622024394]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -69.25
+offset_top = -51.125
+offset_right = 179.25
+offset_bottom = -14.375
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/slider = SubResource("StyleBoxLine_y2qao")
+theme_override_styles/grabber_area = SubResource("StyleBoxLine_v0mso")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxLine_vo6u3")
+max_value = 1.0
+step = 0.05
+value = 1.0
+script = ExtResource("3_v0mso")
+audio_bus_name = "SFX"
+
 [connection signal="pressed" from="Panel/Button_Exit" to="." method="_on_quit_to_main_pressed"]
+[connection signal="value_changed" from="Panel/AudioControlMusic" to="Panel/AudioControlMusic" method="_on_value_changed"]
+[connection signal="value_changed" from="Panel/AudioControlSFX" to="Panel/AudioControlSFX" method="_on_value_changed"]
