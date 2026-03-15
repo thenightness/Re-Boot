@@ -1,6 +1,7 @@
 extends Control
 
 signal start_game
+signal open_settings
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -17,7 +18,7 @@ func _on_start_pressed() -> void:
 
 
 func _on_settings_pressed() -> void:
-	print("Settings")
+	open_settings.emit()
 
 
 func _on_exit_pressed() -> void:

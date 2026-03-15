@@ -9,6 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://n86jhxip5djy" path="res://assets/sounds/game_music.mp3" id="4_choun"]
 [ext_resource type="PackedScene" uid="uid://d20spux633h14" path="res://scenes/Menu/finished_menu.tscn" id="7_o6xl0"]
 [ext_resource type="PackedScene" uid="uid://csb4t210y7v21" path="res://scenes/Menu/death_menu.tscn" id="7_tipki"]
+[ext_resource type="PackedScene" uid="uid://csu3vog3rgjfp" path="res://scenes/Menu/settings_menu.tscn" id="10_choun"]
 
 [sub_resource type="FontVariation" id="FontVariation_o6xl0"]
 base_font = ExtResource("3_tefeu")
@@ -99,4 +100,7 @@ visible = false
 visible = false
 
 [node name="FinishedMenu" parent="UI" unique_id=191311353 instance=ExtResource("7_o6xl0")]
+visible = false
+
+[node name="SettingsMenu" parent="UI" unique_id=479638630 instance=ExtResource("10_choun")]
 visible = false

@@ -5,7 +5,7 @@ extends Node
 @export var game_music: AudioStream
 
 # Enums machen den Code lesbar
-enum GameState { MAIN_MENU, PLAYING, PAUSED, GAME_OVER, GAME_FINISHED}
+enum GameState { MAIN_MENU, PLAYING, PAUSED, SETTINGS, GAME_OVER, GAME_FINISHED}
 var current_state: GameState = GameState.MAIN_MENU
 var current_world: Node = null
 
@@ -13,6 +13,7 @@ var current_world: Node = null
 	GameState.MAIN_MENU: $UI/MainMenu,
 	GameState.PLAYING: $UI/Button_Pause,
 	GameState.PAUSED: $UI/PauseMenu,
+	GameState.SETTINGS: $UI/SettingsMenu,
 	GameState.GAME_OVER: $UI/DeathMenu,
 	GameState.GAME_FINISHED: $UI/FinishedMenu
 }
@@ -24,9 +25,13 @@ func _ready() -> void:
 	ui_layers[GameState.GAME_OVER].restart.connect(_on_start_requested)
 	
 	ui_layers[GameState.PAUSED].resumed.connect(func(): change_state(GameState.PLAYING))
+	
 	ui_layers[GameState.PAUSED].quit_to_main.connect(func(): change_state(GameState.MAIN_MENU))
+	ui_layers[GameState.SETTINGS].quit_to_main.connect(func(): change_state(GameState.MAIN_MENU))
 	ui_layers[GameState.GAME_OVER].quit_to_main.connect(func(): change_state(GameState.MAIN_MENU))
 	ui_layers[GameState.GAME_FINISHED].quit_to_main.connect(func(): change_state(GameState.MAIN_MENU))
+	
+	ui_layers[GameState.MAIN_MENU].open_settings.connect(func(): change_state(GameState.SETTINGS))
 	
 	ui_layers[GameState.PLAYING].pressed.connect(func(): change_state(GameState.PAUSED))
 	
@@ -34,11 +39,20 @@ func _ready() -> void:
 	change_state(GameState.MAIN_MENU)
 
 func change_state(new_state: GameState) -> void:
+	var old_state = current_state
 	current_state = new_state
 	
 	# 1. Sichtbarkeit steuern: Alle verstecken, nur das aktuelle zeigen
 	for state in ui_layers:
-		ui_layers[state].visible = (state == new_state)
+		if new_state == GameState.SETTINGS:
+		# Wenn wir zu Settings wechseln:
+		# Settings anzeigen UND das alte Menü (Main oder Pause) sichtbar lassen
+			if state == GameState.SETTINGS or state == old_state:
+				ui_layers[state].visible = true
+			else:
+				ui_layers[state].visible = false
+		else:
+			ui_layers[state].visible = (state == new_state)
 	
 	get_tree().paused = (GameState.PLAYING != new_state)
 	

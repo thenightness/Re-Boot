@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://csu3vog3rgjfp"]
 
 [ext_resource type="FontFile" uid="uid://bi7jtcxryk3hn" path="res://assets/fonts/BlackOpsOne-Regular.ttf" id="1_1npuy"]
-[ext_resource type="Script" uid="uid://iqxhblv4oald" path="res://scripts/Menu/pause_menu.gd" id="1_qq3mx"]
+[ext_resource type="Script" uid="uid://cwlsh1cbts20y" path="res://scripts/Menu/settings_menu.gd" id="1_y2qao"]
 
 [sub_resource type="Animation" id="Animation_1npuy"]
 length = 0.001
@@ -169,19 +169,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_qq3mx")
-
-[node name="ColorRect" type="ColorRect" parent="." unique_id=33679465]
-modulate = Color(1, 1, 1, 0)
-layout_mode = 0
-offset_left = -13.0
-offset_top = 2.0
-offset_right = 1139.0
-offset_bottom = 650.0
-color = Color(0.13725491, 0.13725491, 0.13725491, 0.54901963)
+script = ExtResource("1_y2qao")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1752884025]
-root_node = NodePath("../ColorRect")
+root_node = NodePath("")
 libraries/ = SubResource("AnimationLibrary_wd0t7")
 
 [node name="Panel" type="Panel" parent="." unique_id=125924026]
@@ -241,3 +232,5 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_qq3mx")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_1npuy")
 theme_override_styles/hover = SubResource("StyleBoxFlat_wd0t7")
 text = "X"
+
+[connection signal="pressed" from="Panel/Button_Exit" to="." method="_on_quit_to_main_pressed"]
